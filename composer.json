@@ -1,7 +1,7 @@
 {
     "name": "avalexgmbh/contao",
     "type": "contao-module",
-    "description": "The Avalex extension allows to display an automatically generated and updated „Data Privacy Statement” within a Contao website.",
+    "description": "The avalex extension allows to display automatically generated and updated legal texts like „imprint“, „data privacy statement” and (if purchased) „cancellation notice“ and „terms and conditions“ within a Contao website.",
     "license": "LGPL-3.0+",
     "authors": [{
             "name": "numero2 - Agentur für digitales Marketing",
