@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.1">
+<file datatype="php" original="system/modules/avalex/languages/en/tl_module.php" source-language="en">
+<body>
+    <trans-unit id="tl_module.avalex_apikey.0">
+        <source>API key</source>
+    </trans-unit>
+    <trans-unit id="tl_module.avalex_apikey.1">
+        <source>API key as shown in avalex.</source>
+    </trans-unit>
+    <trans-unit id="tl_module.avalex_domain.0">
+        <source>Domain</source>
+    </trans-unit>
+    <trans-unit id="tl_module.avalex_domain.1">
+        <source>Domain as configured in avalex.</source>
+    </trans-unit>
+</body>
+</file>
+</xliff>

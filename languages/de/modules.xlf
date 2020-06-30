@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.1">
+<file datatype="php" original="system/modules/avalex/languages/de/modules.php" source-language="en" target-language="de">
+<body>
+    <trans-unit id="FMD.avalex.0">
+        <source>avalex</source>
+        <target>avalex</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_privacy_policy.0">
+        <source>Privacy policy</source>
+        <target>Datenschutzerklärung</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_privacy_policy.1">
+        <source>Always load the latest privacy policy from avalex.</source>
+        <target>Immer aktuelle Datenschutzerklärung von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_imprint.0">
+        <source>Imprint</source>
+        <target>Impressum</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_imprint.1">
+        <source>Always load the latest imprint from avalex.</source>
+        <target>Immer aktuelles Impressum von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_terms_conditions.0">
+        <source>Terms and Conditions</source>
+        <target>Allgemeine Geschäftsbedingungen</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_terms_conditions.1">
+        <source>Always load the latest terms and conditions from avalex.</source>
+        <target>Immer aktuelle AGB's von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_cancellation_policy.0">
+        <source>Cancellation policy</source>
+        <target>Widerrufsbelehrung</target>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_cancellation_policy.1">
+        <source>Always load the latest cancellation policy from avalex.</source>
+        <target>Immer aktuelle Widerrufsbelehrung von avalex laden.</target>
+    </trans-unit>
+</body>
+</file>
+</xliff>

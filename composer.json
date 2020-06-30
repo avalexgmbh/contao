@@ -1,0 +1,25 @@
+{
+    "name": "avalexgmbh/contao",
+    "type": "contao-module",
+    "license": "LGPL-3.0+",
+    "authors": [{
+            "name": "numero2 - Agentur für digitales Marketing",
+            "homepage": "http://www.numero2.de"
+        },
+        {
+            "name": "avalex GmbH",
+            "homepage": "https://avalex.de/"
+        }
+    ],
+    "require": {
+        "contao/core-bundle": "4.*",
+        "contao-community-alliance/composer-plugin": "3.*"
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "": "system/modules/avalex"
+            }
+        }
+    }
+}

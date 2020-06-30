@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<xliff version="1.1">
+<file datatype="php" original="system/modules/avalex/languages/en/modules.php" source-language="en">
+<body>
+    <trans-unit id="FMD.avalex.0">
+        <source>avalex</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_privacy_policy.0">
+        <source>Privacy policy</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_privacy_policy.1">
+        <source>Always load the latest privacy policy from avalex.</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_imprint.0">
+        <source>Imprint</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_imprint.1">
+        <source>Always load the latest imprint from avalex.</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_terms_conditions.0">
+        <source>Terms and Conditions</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_terms_conditions.1">
+        <source>Always load the latest terms and conditions from avalex.</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_cancellation_policy.0">
+        <source>Cancellation policy</source>
+    </trans-unit>
+    <trans-unit id="FMD.avalex_cancellation_policy.1">
+        <source>Always load the latest cancellation policy from avalex.</source>
+    </trans-unit>
+</body>
+</file>
+</xliff>
