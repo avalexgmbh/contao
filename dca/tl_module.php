@@ -26,14 +26,14 @@ foreach( array_keys($GLOBALS['FE_MOD']['avalex']) as $type ) {
  * Add fields to tl_module
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['avalex_domain'] = [
-    'label'         => &$GLOBALS['TL_LANG']['tl_module']['avalex_domain']
+    'label'         => $GLOBALS['TL_LANG']['tl_module']['avalex_domain']
 ,   'inputType'     => 'text'
 ,   'eval'          => ['mandatory'=>true, 'placeholder'=>'example.com', 'tl_class'=>'w50']
 ,   'sql'           => "varchar(255) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['avalex_apikey'] = [
-    'label'         => &$GLOBALS['TL_LANG']['tl_module']['avalex_apikey']
+    'label'         => $GLOBALS['TL_LANG']['tl_module']['avalex_apikey']
 ,   'inputType'     => 'text'
 ,   'eval'          => ['mandatory'=>true, 'tl_class'=>'w50']
 ,   'load_callback' => [ ['tl_module_avalex', 'checkAPIKey'] ]

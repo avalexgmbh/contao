@@ -88,7 +88,7 @@ class AvalexBackend {
             while( $oModules->next() ) {
 
                 $oAPI = NULL;
-                $oAPI = new AvalexAPI( $oModules->avalex_apikey );
+                $oAPI = new AvalexAPI( $oModules->avalex_apikey,  $oModules->avalex_domain );
 
                 $oAPI->getContent( $oModules->current() );
             }
