@@ -6,7 +6,7 @@ Contao avalex extension
 
 About
 --
-With the avalex extension, you can integrate dynamic legal texts like imprint, data privacy statement and (if purchased) cancellation notice and terms and conditions into your website, which are updated by avalex via internet. Please note that you need an individual api key in order for avalex to work on your website, which can be purchased at www.avalex.de.
+With the avalex extension, you can integrate dynamic legal texts like imprint, data privacy statement and (if purchased) cancellation notice and terms and conditions into your website, which are updated by avalex via internet. Please note that you need an individual APIi key in order for avalex to work on your website, which can be purchased at www.avalex.de.
 
 System requirements
 --

@@ -3,14 +3,14 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2020 Leo Feyer
+ * Copyright (c) 2005-2022 Leo Feyer
  *
  * @package   avalex
  * @author    Benny Born <benny.born@numero2.de>
  * @author    Michael Bösherz <michael.boesherz@numero2.de>
  * @license   LGPL
- * @copyright 2020 numero2 - Agentur für digitales Marketing GbR
- * @copyright 2020 avalex GmbH
+ * @copyright 2022 numero2 - Agentur für digitales Marketing GbR
+ * @copyright 2022 avalex GmbH
  */
 
 
@@ -39,7 +39,7 @@ class AvalexAPI {
 
 
     /**
-     * Module to Endpoint mpaaing
+     * Module to Endpoint mapping
      * @var array
      */
     const ENDPOINTS_MAPPING = [
@@ -47,6 +47,7 @@ class AvalexAPI {
     ,   'avalex_imprint' => '/avx-impressum'
     ,   'avalex_terms_conditions' => '/avx-bedingungen'
     ,   'avalex_cancellation_policy' => '/avx-widerruf'
+    ,   'langs' => '/avx-get-domain-langs'
     ];
 
 
@@ -54,24 +55,32 @@ class AvalexAPI {
      * API Key
      * @var string
      */
-    private $apiKey = NULL;
+    private $apiKey = null;
 
 
     /**
      * Domain
      * @var string
      */
-    private $domain = NULL;
+    private $domain = null;
+
+
+    /**
+     * Cached list of available languages
+     * @var string
+     */
+    private $langs = null;
 
 
     /**
      * Constructor
      *
-     * @param $apiKey
+     * @param string $apiKey
+     * @param string $strDomain
      *
      * @return numero2/AvalexAPI
      */
-    public function __construct( $apiKey=NULL, $strDomain=NULL ) {
+    public function __construct( $apiKey=null, $strDomain=null ) {
 
         if( !empty($apiKey) ) {
             $this->apiKey = $apiKey;
@@ -97,78 +106,148 @@ class AvalexAPI {
      */
     public function getContent( $oModule, $validationMode=false ) {
 
-        $oCache = NULL;
-        $oCache = json_decode($oModule->avalex_cache);
+        $oCache = null;
+        $oCache = json_decode($oModule->avalex_cache,1);
 
         // if empty or older than 6 hours force update of cache
-        $updateCache = (empty($oCache) || empty($oCache->content) || (time() - $oCache->date) > (3600*6)) ? true : false;
+        $updateCache = (empty($oCache) || empty($oCache['content']) || (time() - $oCache['date']) > (3600*6)) ? true : false;
 
         if( $updateCache || $validationMode ) {
 
-            $endpoint = self::ENDPOINTS_MAPPING[$oModule->type];
-            $response = $this->send($endpoint);
+            $langCacheKey = $this->apiKey.$this->domain;
 
-            if( !$response instanceof \stdClass && $response !== false ) {
+            // get a list of available languages
+            if( empty($this->langs) || empty($this->langs[$langCacheKey]) ) {
 
-                if( !$oCache instanceof \stdClass ) {
-                    $oCache = new \stdClass;
-                }
+                $endpoint = self::ENDPOINTS_MAPPING['langs'];
+                $response = $this->send($endpoint);
 
-                $oCache->date = time();
-                $oCache->content = $response;
+                if( !$response instanceof \stdClass && $response !== false ) {
 
-                $oModel = NULL;
-                $oModel = ($oModule instanceof Module) ? $oModule->getModel() : $oModule;
+                    $this->langs[$langCacheKey] = json_decode($response,1);
 
-                // not using the models save method bc this does not work in 3.1
-                Database::getInstance()->prepare("UPDATE ".ModuleModel::getTable()." SET avalex_cache = ? WHERE id = ? ")->execute( json_encode($oCache), $oModel->id );
-
-            } else {
-
-                System::log(
-                    sprintf(
-                        'Error while retrieving data from avalex (%s %s)'
-                    ,   $endpoint
-                    ,   $response->code . ' ' . $response->data
-                    )
-                ,   __METHOD__
-                ,   TL_ERROR
-                );
-
-                // insufficient license / wrong domain
-                if( $response->code == 400 ) {
-
-                    $message = sprintf(
-                        $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
-                    ,   Date::parse(Config::get('datimFormat'), time())
-                    ,   '('.$GLOBALS['TL_LANG']['avalex']['msg']['insufficient_license'].')'
-                    );
-
-                // wrong api key
-                } else if( $response->code == 401 ) {
-
-                    $message = $GLOBALS['TL_LANG']['avalex']['msg']['key_invalid'];
-
-                // unknown problem
                 } else {
 
-                    $message = sprintf(
-                        $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
-                    ,   Date::parse(Config::get('datimFormat'), time())
-                    ,   ''
+                    System::log(
+                        sprintf(
+                            'Error while retrieving data from avalex (%s %s)'
+                        ,   $endpoint
+                        ,   $response->code . ' ' . $response->data
+                        )
+                    ,   __METHOD__
+                    ,   TL_ERROR
                     );
+
+                    // insufficient license / wrong domain
+                    if( $response->code == 400 ) {
+
+                        $message = sprintf(
+                            $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
+                        ,   Date::parse(Config::get('datimFormat'), time())
+                        ,   '('.$GLOBALS['TL_LANG']['avalex']['msg']['insufficient_license'].')'
+                        );
+
+                    // wrong api key
+                    } else if( $response->code == 401 ) {
+
+                        $message = $GLOBALS['TL_LANG']['avalex']['msg']['key_invalid'];
+
+                    // unknown problem
+                    } else {
+
+                        $message = sprintf(
+                            $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
+                        ,   Date::parse(Config::get('datimFormat'), time())
+                        ,   ''
+                        );
+                    }
+
+                    if( $validationMode ) {
+                        throw new \Exception($message);
+                    }
+
+                    Message::addError($message,'BE');
+                }
+            }
+
+            // update content for each available language
+            if( !empty($this->langs[$langCacheKey]) ) {
+
+                $endpoint = self::ENDPOINTS_MAPPING[$oModule->type];
+                $moduleName = substr($endpoint, 5);
+
+                $oCache = [];
+                $oCache['date'] = time();
+                $oCache['content'] = [];
+
+                foreach( $this->langs[$langCacheKey] as $lang => $modules ) {
+
+                    if( in_array($moduleName, array_keys($modules)) ) {
+
+                        $response = $this->send($endpoint, false, $lang);
+
+                        if( !$response instanceof \stdClass && $response !== false ) {
+
+                            $oCache['content'][$lang] = $response;
+
+                        } else {
+
+                            System::log(
+                                sprintf(
+                                    'Error while retrieving data from avalex (%s %s)'
+                                ,   $endpoint
+                                ,   $response->code . ' ' . $response->data
+                                )
+                            ,   __METHOD__
+                            ,   TL_ERROR
+                            );
+
+                            // insufficient license / wrong domain
+                            if( $response->code == 400 ) {
+
+                                $message = sprintf(
+                                    $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
+                                ,   Date::parse(Config::get('datimFormat'), time())
+                                ,   '('.$GLOBALS['TL_LANG']['avalex']['msg']['insufficient_license'].')'
+                                );
+
+                            // wrong api key
+                            } else if( $response->code == 401 ) {
+
+                                $message = $GLOBALS['TL_LANG']['avalex']['msg']['key_invalid'];
+
+                            // unknown problem
+                            } else {
+
+                                $message = sprintf(
+                                    $GLOBALS['TL_LANG']['avalex']['msg']['update_failed'][$oModule->type]
+                                ,   Date::parse(Config::get('datimFormat'), time())
+                                ,   ''
+                                );
+                            }
+
+                            if( $validationMode ) {
+                                throw new \Exception($message);
+                            }
+
+                            Message::addError($message,'BE');
+                        }
+                    }
                 }
 
-                if( $validationMode ) {
-                    throw new \Exception($message);
-                }
+                if( !empty($oCache['content']) ) {
 
-                Message::addError($message,'BE');
+                    $oModel = null;
+                    $oModel = ($oModule instanceof Module) ? $oModule->getModel() : $oModule;
+
+                    // not using the models save method bc this does not work in 3.1
+                    Database::getInstance()->prepare("UPDATE ".ModuleModel::getTable()." SET avalex_cache = ? WHERE id = ? ")->execute( json_encode($oCache), $oModel->id );
+                }
             }
         }
 
-        if( $oCache->content ) {
-            return $oCache->content;
+        if( !empty($oCache['content']) ) {
+            return $oCache['content'];
         }
 
         return false;
@@ -178,13 +257,20 @@ class AvalexAPI {
     /**
      * Send request to the API
      *
-     * @param String $uri
+     * @param string $uri
+     * @param boolean $useFallback
+     * @param string $lang
      *
-     * @return String
+     * @return string
      */
-    private function send( $uri=NULL, $useFallback=false ) {
+    private function send( $uri=null, $useFallback=false, $lang='de' ) {
 
-        $url  = ($useFallback ? self::API_HOST_FALLBACK : self::API_HOST) . $uri . '?apikey=' . $this->apiKey . '&domain=' . $this->domain;
+        $url = ($useFallback ? self::API_HOST_FALLBACK : self::API_HOST) . $uri . '?' . http_build_query([
+            'apikey' => $this->apiKey
+        ,   'domain' => $this->domain
+        ,   'version' => '3.0.1'
+        ,   'lang' => $lang
+        ]);
 
         try {
 
@@ -230,7 +316,7 @@ class AvalexAPI {
             // Contao 3
             } else {
 
-                $oRequest = NULL;
+                $oRequest = null;
                 $oRequest = new \Request();
 
                 $oRequest->send($url);

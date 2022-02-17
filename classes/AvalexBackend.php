@@ -3,14 +3,14 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2020 Leo Feyer
+ * Copyright (c) 2005-2022 Leo Feyer
  *
  * @package   avalex
  * @author    Benny Born <benny.born@numero2.de>
  * @author    Michael Bösherz <michael.boesherz@numero2.de>
  * @license   LGPL
- * @copyright 2020 numero2 - Agentur für digitales Marketing GbR
- * @copyright 2020 avalex GmbH
+ * @copyright 2022 numero2 - Agentur für digitales Marketing GbR
+ * @copyright 2022 avalex GmbH
  */
 
 
@@ -47,14 +47,14 @@ class AvalexBackend {
         }
 
         // find frontend module
-        $oModules = NULL;
+        $oModules = null;
         $oModules = \ModuleModel::findBy([\ModuleModel::getTable().".type IN ('".implode("','", array_keys($GLOBALS['FE_MOD']['avalex']))."')"],[]);
 
         if( $oModules ) {
 
             while( $oModules->next() ) {
 
-                $oCache = NULL;
+                $oCache = null;
                 $oCache = json_decode($oModules->avalex_cache);
 
                 if( $oCache && $oCache->date ) {
@@ -80,15 +80,15 @@ class AvalexBackend {
      */
     public function updateModuleContents() {
 
-        $oModules = NULL;
+        $oModules = null;
         $oModules = \ModuleModel::findBy([\ModuleModel::getTable().".type IN ('".implode("','", array_keys($GLOBALS['FE_MOD']['avalex']))."')"],[]);
 
         if( $oModules ) {
 
-            while( $oModules->next() ) {
+            $oAPI = null;
+            $oAPI = new AvalexAPI( $oModules->avalex_apikey,  $oModules->avalex_domain );
 
-                $oAPI = NULL;
-                $oAPI = new AvalexAPI( $oModules->avalex_apikey,  $oModules->avalex_domain );
+            while( $oModules->next() ) {
 
                 $oAPI->getContent( $oModules->current() );
             }
@@ -99,11 +99,11 @@ class AvalexBackend {
     /**
      * Checks if there is a newer version of the avalex module available
      *
-     * @return String
+     * @return string
      */
     private function getMostRecentVersion() {
 
-        $currentVersion = NULL;
+        $currentVersion = null;
         $currentVersion = file_get_contents( __DIR__.'/../version.txt' );
 
         $latestVersion = Config::get('avalexLatestVersion');
@@ -123,7 +123,7 @@ class AvalexBackend {
     public function updateLastExtensionVersion() {
 
         $versionURI = 'https://github.com/avalexgmbh/contao/raw/master/version.txt';
-        $latestVersion = NULL;
+        $latestVersion = null;
 
         // Contao 4 and above
         if( class_exists('\GuzzleHttp\Client') ) {
@@ -151,7 +151,7 @@ class AvalexBackend {
         // Contao 3
         } else {
 
-            $oRequest = NULL;
+            $oRequest = null;
             $oRequest = new \Request();
 
             try {
@@ -181,7 +181,7 @@ class AvalexBackend {
 
         if( $latestVersion ) {
 
-            $oConfig = NULL;
+            $oConfig = null;
             $oConfig = Config::getInstance();
 
             if( method_exists($oConfig, 'persist') ) {
