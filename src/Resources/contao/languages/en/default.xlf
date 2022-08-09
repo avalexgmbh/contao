@@ -1,54 +1,39 @@
 <?xml version="1.0"?>
 <xliff version="1.1">
-<file datatype="php" original="system/modules/avalex/languages/de/default.php" source-language="en" target-language="de">
+<file datatype="php" original="system/modules/avalex/languages/en/default.php" source-language="en">
 <body>
     <trans-unit id="avalex.msg.key_valid">
         <source>The key you entered is valid.</source>
-        <target>Der von Ihnen eingegebene API-Schlüssel ist gültig.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.key_invalid">
         <source>The key you entered appears to be invalid.</source>
-        <target>Der von Ihnen eingegebene API-Schlüssel scheint ungültig zu sein.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.update_failed.avalex_privacy_policy">
         <source>[%s] The privacy policy could not be updated %s</source>
-        <target>[%s] Die Datenschutzerklärung konnte nicht aktualisiert werden %s</target>
     </trans-unit>
     <trans-unit id="avalex.msg.update_failed.avalex_imprint">
         <source>[%s] The imprint could not be updated %s</source>
-        <target>[%s] Das Impressum konnte nicht aktualisiert werden %s</target>
     </trans-unit>
     <trans-unit id="avalex.msg.update_failed.avalex_terms_conditions">
         <source>[%s] The general terms and conditions could not be updated %s</source>
-        <target>[%s] Die Allgemeinen Geschäftsbedingungen konnten nicht aktualisiert werden %s</target>
     </trans-unit>
     <trans-unit id="avalex.msg.update_failed.avalex_cancellation_policy">
         <source>[%s] The cancellation policy could not be updated %s</source>
-        <target>[%s] Die Widerrufsbelehrung konnte nicht aktualisiert werden %s</target>
     </trans-unit>
     <trans-unit id="avalex.msg.last_update.avalex_privacy_policy">
         <source>The privacy policy was last updated on %s.</source>
-        <target>Die Datenschutzerklärung wurde zuletzt am %s aktualisiert.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.last_update.avalex_imprint">
         <source>The imprint was last updated on %s.</source>
-        <target>Das Impressum wurde zuletzt am %s aktualisiert.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.last_update.avalex_terms_conditions">
         <source>The general terms and conditions were last updated on %s.</source>
-        <target>Die Allgemeinen Geschäftsbedingungen wurden zuletzt am %s aktualisiert.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.last_update.avalex_cancellation_policy">
         <source>The cancellation policy was last updated on %s.</source>
-        <target>Die Widerrufsbelehrung wurde zuletzt am %s aktualisiert.</target>
-    </trans-unit>
-    <trans-unit id="avalex.msg.module_update">
-        <source>A new version [%s] of avalex is available, please update now.</source>
-        <target>Eine neue Version der avalex Erweiterung [%s] ist verfügbar, bitte updaten Sie jetzt.</target>
     </trans-unit>
     <trans-unit id="avalex.msg.insufficient_license">
         <source>not licensed or wrong key/domain</source>
-        <target>nicht in Lizenz enthalten oder falsche Domain/Schlüssel- Kombination</target>
     </trans-unit>
 </body>
 </file>

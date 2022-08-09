@@ -3,21 +3,21 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2020 Leo Feyer
+ * Copyright (c) 2005-2022 Leo Feyer
  *
  * @package   avalex
  * @author    Benny Born <benny.born@numero2.de>
  * @author    Michael Bösherz <michael.boesherz@numero2.de>
  * @license   LGPL
- * @copyright 2020 numero2 - Agentur für digitales Marketing GbR
- * @copyright 2020 avalex GmbH
+ * @copyright 2022 numero2 - Agentur für digitales Marketing GbR
+ * @copyright 2022 avalex GmbH
  */
 
 
-namespace numero2\avalex;
+namespace numero2\AvalexBundle;
 
 
-class ModuleAvalexTermsConditions extends AvalexModule {
+class ModuleAvalexTermsConditions extends ModuleAvalex {
 
 
     /**

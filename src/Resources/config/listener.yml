@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: true
+
+    numero2_avalex.listener.data_container.module:
+        class: numero2\AvalexBundle\EventListener\DataContainer\ModuleListener
+
+    numero2_avalex.listener.hooks.hooks:
+        class: numero2\AvalexBundle\EventListener\Hooks\HooksListener

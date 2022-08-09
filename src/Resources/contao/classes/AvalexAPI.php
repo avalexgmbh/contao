@@ -14,17 +14,18 @@
  */
 
 
-namespace numero2\avalex;
+namespace numero2\AvalexBundle;
 
 use Contao\Config;
 use Contao\Database;
 use Contao\Date;
-use Contao\Environment;
 use Contao\Message;
 use Contao\Module;
 use Contao\ModuleModel;
-use Contao\PageModel;
 use Contao\System;
+use Exception;
+use stdClass;
+use Symfony\Component\HttpClient\HttpClient;
 
 
 class AvalexAPI {
@@ -77,21 +78,19 @@ class AvalexAPI {
      *
      * @param string $apiKey
      * @param string $strDomain
-     *
-     * @return numero2/AvalexAPI
      */
     public function __construct( $apiKey=null, $strDomain=null ) {
 
         if( !empty($apiKey) ) {
             $this->apiKey = $apiKey;
         } else {
-            throw new \Exception("No avalex API key given");
+            throw new Exception("No avalex API key given");
         }
 
         if( !empty($strDomain) ) {
             $this->domain = $strDomain;
         } else {
-            throw new \Exception("No avalex domain given");
+            throw new Exception("No avalex domain given");
         }
     }
 
@@ -122,21 +121,23 @@ class AvalexAPI {
                 $endpoint = self::ENDPOINTS_MAPPING['langs'];
                 $response = $this->send($endpoint);
 
-                if( !$response instanceof \stdClass && $response !== false ) {
+                if( !$response instanceof stdClass && $response !== false ) {
 
                     $this->langs[$langCacheKey] = json_decode($response,1);
 
                 } else {
 
-                    System::log(
-                        sprintf(
-                            'Error while retrieving data from avalex (%s %s)'
-                        ,   $endpoint
-                        ,   $response->code . ' ' . $response->data
-                        )
-                    ,   __METHOD__
-                    ,   TL_ERROR
+                    $msg = sprintf(
+                        'Error while retrieving data from avalex (%s %s)'
+                    ,   $endpoint
+                    ,   $response->code . ' ' . $response->data
                     );
+
+                    if( System::getContainer()->has('monolog.logger.contao.error') ) {
+                        System::getContainer()->get('monolog.logger.contao.error')->error($msg);
+                    } else {
+                        System::log($msg, __METHOD__, TL_ERROR);
+                    }
 
                     // insufficient license / wrong domain
                     if( $response->code == 400 ) {
@@ -163,7 +164,7 @@ class AvalexAPI {
                     }
 
                     if( $validationMode ) {
-                        throw new \Exception($message);
+                        throw new Exception($message);
                     }
 
                     Message::addError($message,'BE');
@@ -186,21 +187,23 @@ class AvalexAPI {
 
                         $response = $this->send($endpoint, false, $lang);
 
-                        if( !$response instanceof \stdClass && $response !== false ) {
+                        if( !$response instanceof stdClass && $response !== false ) {
 
                             $oCache['content'][$lang] = $response;
 
                         } else {
 
-                            System::log(
-                                sprintf(
-                                    'Error while retrieving data from avalex (%s %s)'
-                                ,   $endpoint
-                                ,   $response->code . ' ' . $response->data
-                                )
-                            ,   __METHOD__
-                            ,   TL_ERROR
+                            $msg = sprintf(
+                                'Error while retrieving data from avalex (%s %s)'
+                            ,   $endpoint
+                            ,   $response->code . ' ' . $response->data
                             );
+
+                            if( System::getContainer()->has('monolog.logger.contao.error') ) {
+                                System::getContainer()->get('monolog.logger.contao.error')->error($msg);
+                            } else {
+                                System::log($msg, __METHOD__, TL_ERROR);
+                            }
 
                             // insufficient license / wrong domain
                             if( $response->code == 400 ) {
@@ -227,7 +230,7 @@ class AvalexAPI {
                             }
 
                             if( $validationMode ) {
-                                throw new \Exception($message);
+                                throw new Exception($message);
                             }
 
                             Message::addError($message,'BE');
@@ -241,7 +244,7 @@ class AvalexAPI {
                     $oModel = ($oModule instanceof Module) ? $oModule->getModel() : $oModule;
 
                     // not using the models save method bc this does not work in 3.1
-                    Database::getInstance()->prepare("UPDATE ".ModuleModel::getTable()." SET avalex_cache = ? WHERE id = ? ")->execute( json_encode($oCache), $oModel->id );
+                    Database::getInstance()->prepare("UPDATE ".ModuleModel::getTable()." SET avalex_cache = ? WHERE id = ?")->execute( json_encode($oCache), $oModel->id );
                 }
             }
         }
@@ -274,80 +277,52 @@ class AvalexAPI {
 
         try {
 
-            // Contao 4 and above
-            if( class_exists('\GuzzleHttp\Client') ) {
+            $client = null;
+            $client = HttpClient::create([
+                'timeout' => 5
+            ,   'max_duration' => 5
+            ,   'verify_peer' => false
+            ,   'verify_host' => false
+            ]);
 
-                $request = new \GuzzleHttp\Client(
-                    [
-                        \GuzzleHttp\RequestOptions::TIMEOUT         => 5
-                    ,   \GuzzleHttp\RequestOptions::CONNECT_TIMEOUT => 5
-                    ,   \GuzzleHttp\RequestOptions::HTTP_ERRORS     => false
-                    ]
-                );
+            try {
 
-                try {
+                $response = null;
+                $response = $client->request('GET', $url);
 
-                    $response = $request->get($url);
+            } catch( Exception $e ) {
 
-                } catch( \Exception $e ) {
-
-                    // use fallback domain if the main one does not work
-                    if( !$useFallback && self::API_HOST_FALLBACK ) {
-                        return $this->send($uri, true);
-                    }
-
-                    throw $e;
+                // use fallback domain if the main one does not work
+                if( !$useFallback && self::API_HOST_FALLBACK ) {
+                    return $this->send($uri, true);
                 }
 
-                if( $response->getStatusCode() != 200 ) {
-
-                    $message = json_decode( $response->getBody()->getContents() );
-
-                    $return = new \stdClass;
-                    $return->code = $response->getStatusCode();
-                    $return->data = $message->message ? $message->message : $response->getReasonPhrase();
-
-                    return $return;
-
-                } else {
-                    return $response->getBody()->getContents();
-                }
-
-            // Contao 3
-            } else {
-
-                $oRequest = null;
-                $oRequest = new \Request();
-
-                $oRequest->send($url);
-
-                if( $oRequest->error && strpos($oRequest->error, '110') !== FALSE ) {
-
-                    // use fallback domain if the main one does not work
-                    if( !$useFallback ) {
-                        return $this->send($uri, true);
-                    }
-                }
-
-                if( $oRequest->code != 200 ) {
-
-                    $message = json_decode( $oRequest->response );
-
-                    $return = new \stdClass;
-                    $return->code =$oRequest->code;
-                    $return->data = $message->message ? $message->message : $oRequest->error;
-
-                    return $return;
-
-                } else {
-
-                    return $oRequest->response;
-                }
+                throw $e;
             }
 
-        } catch( \Exception $e ) {
+            if( $response->getStatusCode() != 200 ) {
 
-            System::log('Exception while retrieving data from avalex (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+                $message = $response->getContent(false);
+
+                $return = new stdClass;
+                $return->code = $response->getStatusCode();
+                $return->data = $message ?? '';
+
+                return $return;
+
+            } else {
+                return $response->getContent(false);
+            }
+
+        } catch( Exception $e ) {
+
+            $msg = 'Exception while retrieving data from avalex (' . $e->getMessage() . ')';
+            if( System::getContainer()->has('monolog.logger.contao.error') ) {
+                System::getContainer()->get('monolog.logger.contao.error')->error($msg);
+            } else {
+                System::log($msg, __METHOD__, TL_ERROR);
+            }
+
             return false;
         }
     }

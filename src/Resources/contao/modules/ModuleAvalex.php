@@ -14,13 +14,15 @@
  */
 
 
-namespace numero2\avalex;
+namespace numero2\AvalexBundle;
 
 use Contao\BackendTemplate;
 use Contao\FrontendTemplate;
+use Contao\Module;
+use Contao\System;
 
 
-abstract class AvalexModule extends \Module {
+abstract class ModuleAvalex extends Module {
 
 
     /**
@@ -42,20 +44,18 @@ abstract class AvalexModule extends \Module {
      */
     public function generate() {
 
-        if( TL_MODE == 'BE' ) {
+        $scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
+        $requestStack = System::getContainer()->get('request_stack');
+
+        if( $scopeMatcher->isBackendRequest($requestStack->getCurrentRequest()) ) {
 
             $objTemplate = new BackendTemplate('be_wildcard');
 
-            if( empty($this->FMD_TYPE) ) {
-                $objTemplate->wildcard = '### '.$GLOBALS['TL_LANG']['FMD'][$this->moduleType][0].' ###';
-            } else {
-                $objTemplate->wildcard = '### '.utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->FMD_TYPE][0]).' ###';
-            }
-
+            $objTemplate->wildcard = '### '.$GLOBALS['TL_LANG']['FMD'][$this->moduleType][0].' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href = System::getContainer()->get('router')->generate('contao_backend').'?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
