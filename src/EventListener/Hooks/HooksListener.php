@@ -21,6 +21,7 @@ use Contao\CoreBundle\ServiceAnnotation\CronJob;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
 use Contao\ModuleModel;
+use numero2\AvalexBundle\AvalexAPI;
 
 
 class HooksListener {
