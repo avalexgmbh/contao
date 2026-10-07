@@ -1,0 +1,39 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+
+    numero2_avalex.api.client:
+        class: numero2\AvalexBundle\Api\AvalexClient
+        arguments:
+            - '@http_client'
+        tags:
+            - { name: kernel.reset, method: reset }
+
+    numero2\AvalexBundle\Api\AvalexClient: '@numero2_avalex.api.client'
+
+
+    numero2_avalex.cron.update_texts:
+        class: numero2\AvalexBundle\Cron\UpdateTextsCron
+        arguments:
+            - '@numero2_avalex.util.avalex'
+
+
+    # the $cacheTagManager argument is set by the CacheTagManagerPass
+    numero2_avalex.util.avalex:
+        class: numero2\AvalexBundle\Util\AvalexUtil
+        arguments:
+            $client: '@numero2_avalex.api.client'
+            $connection: '@database_connection'
+            $logger: '@monolog.logger.contao.error'
+        tags:
+            - { name: kernel.reset, method: reset }
+
+    numero2\AvalexBundle\Util\AvalexUtil: '@numero2_avalex.util.avalex'
+
+    numero2_avalex.util.message:
+        class: numero2\AvalexBundle\Util\MessageUtil
+        arguments:
+            - '@contao.framework'
+            - '@translator'
+            - '@numero2_avalex.util.avalex'

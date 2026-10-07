@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+
+    numero2\AvalexBundle\Controller\ContentElement\AvalexController:
+        arguments:
+            - '@numero2_avalex.util.avalex'
+            - '@numero2_avalex.util.message'
+
+    numero2\AvalexBundle\Controller\FrontendModule\AvalexController:
+        arguments:
+            - '@numero2_avalex.util.avalex'

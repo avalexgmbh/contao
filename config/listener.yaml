@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+
+    numero2_avalex.listener.data_container.avalex:
+        class: numero2\AvalexBundle\EventListener\DataContainer\AvalexListener
+        arguments:
+            - '@contao.framework'
+            - '@request_stack'
+            - '@numero2_avalex.util.avalex'
+            - '@numero2_avalex.util.message'
+
+
+    numero2_avalex.listener.hook.system_messages:
+        class: numero2\AvalexBundle\EventListener\Hook\SystemMessagesListener
+        arguments:
+            - '@numero2_avalex.util.avalex'
+            - '@numero2_avalex.util.message'

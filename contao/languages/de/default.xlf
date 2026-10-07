@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<xliff version="1.1">
+<file source-language="en" target-language="de">
+<body>
+    <trans-unit id="avalex.msg.key_valid">
+        <source>The domain and API key are valid, the texts have been updated.</source>
+        <target>Domain und API-Schlüssel sind gültig, die Texte wurden aktualisiert.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.key_invalid">
+        <source>The API key you entered appears to be invalid.</source>
+        <target>Der von Ihnen eingegebene API-Schlüssel scheint ungültig zu sein.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.insufficient_license">
+        <source>not licensed or wrong key/domain</source>
+        <target>nicht in Lizenz enthalten oder falsche Domain/Schlüssel-Kombination</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_privacy_policy">
+        <source>[%s] The privacy policy could not be updated.</source>
+        <target>[%s] Die Datenschutzerklärung konnte nicht aktualisiert werden.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_imprint">
+        <source>[%s] The imprint could not be updated.</source>
+        <target>[%s] Das Impressum konnte nicht aktualisiert werden.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_terms_conditions">
+        <source>[%s] The general terms and conditions could not be updated.</source>
+        <target>[%s] Die Allgemeinen Geschäftsbedingungen konnten nicht aktualisiert werden.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_cancellation_policy">
+        <source>[%s] The cancellation policy could not be updated.</source>
+        <target>[%s] Die Widerrufsbelehrung konnte nicht aktualisiert werden.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_privacy_policy">
+        <source>The privacy policy (%s) was last updated on %s.</source>
+        <target>Die Datenschutzerklärung (%s) wurde zuletzt am %s aktualisiert.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_imprint">
+        <source>The imprint (%s) was last updated on %s.</source>
+        <target>Das Impressum (%s) wurde zuletzt am %s aktualisiert.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_terms_conditions">
+        <source>The general terms and conditions (%s) were last updated on %s.</source>
+        <target>Die Allgemeinen Geschäftsbedingungen (%s) wurden zuletzt am %s aktualisiert.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_cancellation_policy">
+        <source>The cancellation policy (%s) was last updated on %s.</source>
+        <target>Die Widerrufsbelehrung (%s) wurde zuletzt am %s aktualisiert.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.outdated">
+        <source>avalex (%s): The texts have not been updated since %s. Please check the domain and API key as well as the system log.</source>
+        <target>avalex (%s): Die Texte wurden seit %s nicht mehr aktualisiert. Bitte prüfen Sie Domain und API-Schlüssel sowie das System-Log.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.never_updated">
+        <source>avalex (%s): The texts could not be loaded yet. Please check the domain and API key as well as the system log.</source>
+        <target>avalex (%s): Die Texte konnten bisher nicht geladen werden. Bitte prüfen Sie Domain und API-Schlüssel sowie das System-Log.</target>
+    </trans-unit>
+    <trans-unit id="avalex.msg.failed">
+        <source>avalex (%s): The last update on %s failed, the previous texts are still in use. Please check the domain and API key as well as the system log.</source>
+        <target>avalex (%s): Die letzte Aktualisierung am %s ist fehlgeschlagen, es werden weiterhin die bisherigen Texte verwendet. Bitte prüfen Sie Domain und API-Schlüssel sowie das System-Log.</target>
+    </trans-unit>
+    <trans-unit id="avalex.label.module">
+        <source>module "%s"</source>
+        <target>Modul "%s"</target>
+    </trans-unit>
+    <trans-unit id="avalex.label.content">
+        <source>content element ID %s</source>
+        <target>Inhaltselement ID %s</target>
+    </trans-unit>
+    <trans-unit id="avalex.label.content_title">
+        <source>content element "%s"</source>
+        <target>Inhaltselement "%s"</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex">
+        <source>avalex</source>
+        <target>avalex</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_privacy_policy.0">
+        <source>Privacy policy</source>
+        <target>Datenschutzerklärung</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_privacy_policy.1">
+        <source>Always load the latest privacy policy from avalex.</source>
+        <target>Immer aktuelle Datenschutzerklärung von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_imprint.0">
+        <source>Imprint</source>
+        <target>Impressum</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_imprint.1">
+        <source>Always load the latest imprint from avalex.</source>
+        <target>Immer aktuelles Impressum von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_terms_conditions.0">
+        <source>Terms and conditions</source>
+        <target>Allgemeine Geschäftsbedingungen</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_terms_conditions.1">
+        <source>Always load the latest terms and conditions from avalex.</source>
+        <target>Immer aktuelle Allgemeine Geschäftsbedingungen von avalex laden.</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_cancellation_policy.0">
+        <source>Cancellation policy</source>
+        <target>Widerrufsbelehrung</target>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_cancellation_policy.1">
+        <source>Always load the latest cancellation policy from avalex.</source>
+        <target>Immer aktuelle Widerrufsbelehrung von avalex laden.</target>
+    </trans-unit>
+</body>
+</file>
+</xliff>

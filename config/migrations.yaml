@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+
+    numero2\AvalexBundle\Migration\LegacyTemplateMigration:
+        arguments:
+            - '@database_connection'

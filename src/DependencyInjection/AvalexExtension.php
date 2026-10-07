@@ -1,16 +1,12 @@
 <?php
 
 /**
- * Contao Open Source CMS
+ * avalex Bundle for Contao Open Source CMS
  *
- * Copyright (c) 2005-2022 Leo Feyer
- *
- * @package   avalex
  * @author    Benny Born <benny.born@numero2.de>
- * @author    Michael Bösherz <michael.boesherz@numero2.de>
- * @license   LGPL
- * @copyright 2022 numero2 - Agentur für digitales Marketing GbR
- * @copyright 2022 avalex GmbH
+ * @license   LGPL-3.0-or-later
+ * @copyright Copyright (c) 2026, numero2 - Agentur für digitales Marketing GbR
+ * @copyright Copyright (c) 2026, avalex GmbH
  */
 
 
@@ -18,8 +14,8 @@ namespace numero2\AvalexBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 
 class AvalexExtension extends Extension {
@@ -28,13 +24,16 @@ class AvalexExtension extends Extension {
     /**
      * {@inheritdoc}
      */
-    public function load( array $configs, ContainerBuilder $container ): void {
+    public function load( array $mergedConfig, ContainerBuilder $container ): void {
 
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__.'/../Resources/config')
+            new FileLocator(__DIR__.'/../../config')
         );
 
-        $loader->load('listener.yml');
+        $loader->load('controller.yaml');
+        $loader->load('listener.yaml');
+        $loader->load('migrations.yaml');
+        $loader->load('services.yaml');
     }
 }

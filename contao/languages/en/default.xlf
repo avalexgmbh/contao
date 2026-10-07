@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<xliff version="1.1">
+<file source-language="en">
+<body>
+    <trans-unit id="avalex.msg.key_valid">
+        <source>The domain and API key are valid, the texts have been updated.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.key_invalid">
+        <source>The API key you entered appears to be invalid.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.insufficient_license">
+        <source>not licensed or wrong key/domain</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_privacy_policy">
+        <source>[%s] The privacy policy could not be updated.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_imprint">
+        <source>[%s] The imprint could not be updated.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_terms_conditions">
+        <source>[%s] The general terms and conditions could not be updated.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.update_failed.avalex_cancellation_policy">
+        <source>[%s] The cancellation policy could not be updated.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_privacy_policy">
+        <source>The privacy policy (%s) was last updated on %s.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_imprint">
+        <source>The imprint (%s) was last updated on %s.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_terms_conditions">
+        <source>The general terms and conditions (%s) were last updated on %s.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.last_update.avalex_cancellation_policy">
+        <source>The cancellation policy (%s) was last updated on %s.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.outdated">
+        <source>avalex (%s): The texts have not been updated since %s. Please check the domain and API key as well as the system log.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.never_updated">
+        <source>avalex (%s): The texts could not be loaded yet. Please check the domain and API key as well as the system log.</source>
+    </trans-unit>
+    <trans-unit id="avalex.msg.failed">
+        <source>avalex (%s): The last update on %s failed, the previous texts are still in use. Please check the domain and API key as well as the system log.</source>
+    </trans-unit>
+    <trans-unit id="avalex.label.module">
+        <source>module "%s"</source>
+    </trans-unit>
+    <trans-unit id="avalex.label.content">
+        <source>content element ID %s</source>
+    </trans-unit>
+    <trans-unit id="avalex.label.content_title">
+        <source>content element "%s"</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex">
+        <source>avalex</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_privacy_policy.0">
+        <source>Privacy policy</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_privacy_policy.1">
+        <source>Always load the latest privacy policy from avalex.</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_imprint.0">
+        <source>Imprint</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_imprint.1">
+        <source>Always load the latest imprint from avalex.</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_terms_conditions.0">
+        <source>Terms and conditions</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_terms_conditions.1">
+        <source>Always load the latest terms and conditions from avalex.</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_cancellation_policy.0">
+        <source>Cancellation policy</source>
+    </trans-unit>
+    <trans-unit id="CTE.avalex_cancellation_policy.1">
+        <source>Always load the latest cancellation policy from avalex.</source>
+    </trans-unit>
+</body>
+</file>
+</xliff>

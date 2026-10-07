@@ -1,10 +1,11 @@
 {
     "name": "avalexgmbh/contao",
-    "type": "contao-module",
+    "type": "contao-bundle",
     "description": "The avalex extension allows to display automatically generated and updated legal texts like „imprint“, „data privacy statement” and (if purchased) „cancellation notice“ and „terms and conditions“ within a Contao website.",
-    "license": "LGPL-3.0+",
+    "keywords": ["contao", "avalex", "dsgvo", "gdpr", "imprint", "impressum", "privacy policy", "datenschutzerklärung", "legal texts"],
+    "license": "LGPL-3.0-or-later",
     "authors": [{
-            "name": "numero2 - Agentur für digitales Marketing",
+            "name": "numero2 - Agentur für digitales Marketing GbR",
             "homepage": "https://www.numero2.de"
         },
         {
@@ -13,10 +14,20 @@
         }
     ],
     "require": {
-        "contao/core-bundle": "^4.9 || ^5.0"
+        "php": "^8.1",
+        "contao/core-bundle": "^5.3 || ^6.0",
+        "doctrine/dbal": "^3.6 || ^4.0",
+        "psr/log": "^1.1 || ^2.0 || ^3.0",
+        "symfony/config": "^6.4 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-client-contracts": "^3.0",
+        "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
+        "symfony/translation-contracts": "^3.0"
     },
     "require-dev": {
-        "contao/manager-plugin": "^2.0"
+        "contao/manager-plugin": "^2.0",
+        "shipmonk/composer-dependency-analyser": "^1.4"
     },
     "conflict": {
         "contao/core": "*",
@@ -28,15 +39,16 @@
     "autoload": {
         "psr-4": {
             "numero2\\AvalexBundle\\": "src/"
-        },
-        "classmap": [
-            "src/Resources/contao/"
-        ],
-        "exclude-from-classmap": [
-            "src/Resources/contao/config/",
-            "src/Resources/contao/dca/",
-            "src/Resources/contao/languages/",
-            "src/Resources/contao/templates/"
-        ]
+        }
+    },
+    "scripts": {
+        "depcheck": "@php vendor/bin/composer-dependency-analyser --config=depcheck.php"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": false,
+            "php-http/discovery": false,
+            "contao/manager-plugin": false
+        }
     }
 }

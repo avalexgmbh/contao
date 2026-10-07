@@ -1,0 +1,9 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+    {% if as_editor_view|default(false) %}
+        <p class="tl_gray">{{ preview|default|raw }}</p>
+    {% else %}
+        {{ content|insert_tag|raw }}
+    {% endif %}
+{% endblock %}
