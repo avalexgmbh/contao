@@ -12,6 +12,7 @@
 
 namespace numero2\AvalexBundle\Api;
 
+use Composer\InstalledVersions;
 use numero2\AvalexBundle\Exception\AvalexApiException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -27,9 +28,21 @@ class AvalexClient {
     public const API_HOST_FALLBACK = 'https://proxy.avalex.de';
 
     /**
-     * Version of the API protocol sent along with each request
+     * Name of this package, used to determine the installed version
      */
-    public const API_VERSION = '3.0.1';
+    public const PACKAGE_NAME = 'avalexgmbh/contao';
+
+    /**
+     * Added to the major version of this bundle, the 2.x releases
+     * already sent "3.0.1" so the version sent must not fall behind
+     */
+    public const MAJOR_VERSION_OFFSET = 1;
+
+    /**
+     * Version sent along with each request if the installed one
+     * can't be determined (e.g. dev-master), offset already included
+     */
+    public const FALLBACK_VERSION = '4.0.1';
 
     /**
      * Endpoint returning the available languages and texts of a domain
@@ -53,6 +66,11 @@ class AvalexClient {
      * Timestamps of the last failed connection attempt per host
      */
     private array $unreachableHosts = [];
+
+    /**
+     * Installed version of this bundle
+     */
+    private ?string $bundleVersion = null;
 
 
     public function __construct( HttpClientInterface $httpClient ) {
@@ -130,7 +148,7 @@ class AvalexClient {
         $query = [
             'apikey' => $apiKey
         ,   'domain' => $domain
-        ,   'version' => self::API_VERSION
+        ,   'version' => $this->getBundleVersion()
         ,   'lang' => $language
         ];
 
@@ -185,6 +203,35 @@ class AvalexClient {
         }
 
         throw new AvalexApiException(sprintf('Error while retrieving data from avalex (%s) %s', $endpoint, $this->maskApiKey($lastException?->getMessage() ?? 'API hosts not reachable', $apiKey)), 0, $lastException);
+    }
+
+
+    /**
+     * Returns the installed version of this bundle (major version raised
+     * by the offset) in the format x[.y.z] expected by the API
+     *
+     * @return string
+     */
+    private function getBundleVersion(): string {
+
+        if( $this->bundleVersion !== null ) {
+            return $this->bundleVersion;
+        }
+
+        $version = null;
+
+        try {
+            $version = InstalledVersions::getPrettyVersion(self::PACKAGE_NAME);
+        } catch( \OutOfBoundsException $e ) {
+            // package not installed via composer
+        }
+
+        // branches like "dev-master" or "3.0.x-dev" do not have a usable version
+        if( $version !== null && preg_match('/^v?(\d+)((?:\.\d+\.\d+)?)$/', $version, $matches) ) {
+            return $this->bundleVersion = ((int) $matches[1] + self::MAJOR_VERSION_OFFSET) . $matches[2];
+        }
+
+        return $this->bundleVersion = self::FALLBACK_VERSION;
     }
 
 
